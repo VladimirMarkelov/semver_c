@@ -39,6 +39,7 @@ The function can be used to sort version list or just to compare two versions. T
 * 0 - versions are equal
 
 Notes:
+
 1. Build part of version does not affect the result. So compare_versions(1.0.0+build2, 1.0.0+build12) = 0, and compare_versions(1.0.0+45, 1.0.0) = 0
 2. Version without prerelease part is greater than any other version with the same major, minor, and patch parts. So, compare_versions(1.0.0, 1.0.0-rc2) = 1
 3. **ver_a** and **ver_b** can be NULL. NULL is considered less than any other version. If both arguments are NULL then the result of the function is 0.
