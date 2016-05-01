@@ -98,15 +98,15 @@ make MAKE=<tool-name>
 You can add only required files to your project to minimize size and compile time. The library contains 4 parts (each part depends on all previously mentioned parts):
 
 1. Core does not depend on anyhting and includes only basic features: parse and check version, compare two versions, and check if a version meets a requirement set with another version. The core does not do any dynamic memory allocation - only static variables or pointer to a user-defined variabes. Core files:
-* semver.c
-* semver.h
+  * semver.c
+  * semver.h
 2. Checking if a version fits any item in a version list. This function uses dynamic memory allocation. Files to include:
-* semver_check.c
-* semver_check.h
-* ver_range.c
-* ver_range.h
+  * semver_check.c
+  * semver_check.h
+  * ver_range.c
+  * ver_range.h
 3. Pretty printing function for ranges and single version. Only test applications need these file (you can use them for debugging or logging):
-* semver_utils.c
-* semver_utils.h
+  * semver_utils.c
+  * semver_utils.h
 4. Test applications: everything in the directory **test**
 
