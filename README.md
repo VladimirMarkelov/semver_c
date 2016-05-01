@@ -58,6 +58,7 @@ Result:
 * 1 - **ver_a** fits **ver_b** requirements.
 
 Notes:
+
 1. Empty **cmp** (COMPARE_NONE) is the same as COMPARE_EQUAL.
 2. COMPARE_MINOR and COMPARE_MAJOR work different from other compare operators: they does not check prereleases. So, version_equals(1.0.0-rc1, COMPARE_GREATEROREQUAL 1.0.0) == 0 but version_equals(1.0.0-rc1, COMPARE_MINOR 1.0.0) == 1
 
@@ -76,6 +77,7 @@ Result:
 * SEMVER_INVALID_VERSION_LIST - **version_list** is **NULL** or one of one of version or version range in list is invalid
 
 Rules to check:
+
 1. At first the function checks if a version meets any one-item rule in a version list (all items with COMPARE_NONE, COMPARE_EQUAL, COMPARE_NEQUAL, COMPARE_MAJOR, and COMPARE_MINOR **cmp** field) and stores version ranges in a version range list in the order of appearance, combining by two items of opposite **cmp** values. So, make sure that you enlist versions with COMPARE_GREATER, COMPARE_GREATEROREQUAL, COMPARE_LESS, and COMPARE_LESSOREQUAL in correct order (e.g, '>1.5.0,>=1.1.0,<1.2.0' makes two ranges to check: [ver>1.5.0 && ver<1.2.0] and [ver>=1.1.0] but '>=1.1.0,>1.5.0,<1.2.0' makes ranges to check: [ver>=1.1.0 && ver<1.2.0] and [ver>1.5.0])
 2. If no single version equals **ver** then the function checks if **ver** fits any version range in list
 3. Remember about COMPARE_MAJOR and COMPARE_MINOR feature. So, if you want to limit the required version with sinlge stable version (in other words, you want to forbid any beta, alpha, rc etc version then do not use COMPARE_MAJOR and COMPARE_MINOR: '~1.1.0;>=1.1.0' does not work, because this list allows to use 1.1.0-rc using the first item '~1.1.0'. Use a list '>1.1.0,<1.2.0' or like '1.1.0 - 1.1.999999'.
@@ -90,9 +92,11 @@ I use MinGW on Windows. To build the library and the tests using MinGW just run 
 On Linux you can try the same trick (it should work):
 ```
 make MAKE=<tool-name>
+```
 
 ## Using without building the library
 You can add only required files to your project to minimize size and compile time. The library contains 4 parts (each part depends on all previously mentioned parts):
+
 1. Core does not depend on anyhting and includes only basic features: parse and check version, compare two versions, and check if a version meets a requirement set with another version. The core does not do any dynamic memory allocation - only static variables or pointer to a user-defined variabes. Core files:
 * semver.c
 * semver.h
