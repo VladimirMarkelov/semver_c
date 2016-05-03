@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-c -std=c11 -Wall -Wno-format -O2 -DNDEBUG -pedantic
+CFLAGS=-c -Wall -Wno-format -O2 -DNDEBUG -pedantic
 STDLIBS =
 GCCLIBS =
 LDFLAGS= -s $(STDLIBS) $(GCCLIBS)
