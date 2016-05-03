@@ -1,5 +1,5 @@
 # Semantic Versioning
-Crossplatform library for parsing and comparing versions.
+Crossplatform library for parsing and comparing versions - version 1.0.0.
 For details about semantic versioning, please see ['Semantic Versioning'](http://semver.org/)
 
 # API
