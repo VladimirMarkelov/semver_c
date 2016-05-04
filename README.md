@@ -61,8 +61,8 @@ Notes:
 
 1. Empty **cmp** (COMPARE_NONE) is the same as COMPARE_EQUAL.
 2. COMPARE_MINOR and COMPARE_MAJOR are syntax sugar for two compound checks:
-  *COMPARE_MAJOR: (version_a >= version_b) && (verson_a.major == version_b.major)
-  *COMPARE_MINOR: (version_a >= version_b) && (verson_a.major == version_b.major) && (verson_a.minor == version_b.minor)
+  * COMPARE_MAJOR: (version_a >= version_b) && (verson_a.major == version_b.major)
+  * COMPARE_MINOR: (version_a >= version_b) && (verson_a.major == version_b.major) && (verson_a.minor == version_b.minor)
 
 ### int check_version(const SemVersion* ver, const char *version_list)
 The function checks if a version **ver** meets any of the requirements set in **version_list**.
@@ -83,8 +83,8 @@ Rules to check:
 1. At first the function checks if a version meets any one-item rule in a version list (all items with COMPARE_NONE, COMPARE_EQUAL, COMPARE_NEQUAL, COMPARE_MAJOR, and COMPARE_MINOR **cmp** field) and stores version ranges in a version range list in the order of appearance, combining by two items of opposite **cmp** values. So, make sure that you enlist versions with COMPARE_GREATER, COMPARE_GREATEROREQUAL, COMPARE_LESS, and COMPARE_LESSOREQUAL in correct order (e.g, '>1.5.0,>=1.1.0,<1.2.0' makes two ranges to check: [ver>1.5.0 && ver<1.2.0] and [ver>=1.1.0] but '>=1.1.0,>1.5.0,<1.2.0' makes ranges to check: [ver>=1.1.0 && ver<1.2.0] and [ver>1.5.0])
 2. If no single version equals **ver** then the function checks if **ver** fits any version range in list
 3. COMPARE_MINOR and COMPARE_MAJOR are syntax sugar for two compound checks:
-  *COMPARE_MAJOR: (version_a >= version_b) && (verson_a.major == version_b.major)
-  *COMPARE_MINOR: (version_a >= version_b) && (verson_a.major == version_b.major) && (verson_a.minor == version_b.minor)
+  * COMPARE_MAJOR: (version_a >= version_b) && (verson_a.major == version_b.major)
+  * COMPARE_MINOR: (version_a >= version_b) && (verson_a.major == version_b.major) && (verson_a.minor == version_b.minor)
 
 # Using the library
 
