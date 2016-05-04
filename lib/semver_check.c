@@ -78,12 +78,46 @@ int check_version(const SemVersion* ver, const char *version_list) {
             break;
         }
 
-        if (v.cmp == COMPARE_NEQUAL || v.cmp == COMPARE_NONE || v.cmp == COMPARE_EQUAL || v.cmp == COMPARE_MAJOR || v.cmp == COMPARE_MINOR) {
+        if (v.cmp == COMPARE_NEQUAL || v.cmp == COMPARE_NONE || v.cmp == COMPARE_EQUAL) {
             if (version_equals(ver, &v)) {
                 res = SEMVER_OK;
                 break;
             } else {
                 res = SEMVER_OUT_OF_RANGE;
+            }
+        } else if (v.cmp == COMPARE_MAJOR || v.cmp == COMPARE_MINOR) {
+            if (range == NULL) {
+                range = init_version_range();
+            }
+
+            if (range == NULL) {
+                res = SEMVER_OUT_OF_MEMORY;
+                break;
+            }
+
+            int compare = v.cmp;
+            v.cmp = COMPARE_GREATEROREQUAL;
+            first_item = add_version(range, &v, 1);
+            if (first_item == NULL) {
+                res = SEMVER_OUT_OF_MEMORY;
+                break;
+            }
+
+            v.prerelease = PRERELEASE_NONE;
+            v.cmp = COMPARE_LESS;
+            v.patch = 0;
+
+            if (compare == COMPARE_MAJOR) {
+                v.minor = 0;
+                v.major++;
+            } else {
+                v.minor++;
+            }
+
+            int ok = complete_version_range(first_item, &v);
+            if (ok != SEMVER_OK) {
+                res = ok;
+                break;
             }
         } else {
             if (range == NULL) {

@@ -33,9 +33,15 @@ typedef enum version_compare_t {
     COMPARE_LESS,
     COMPARE_GREATEROREQUAL,
     COMPARE_LESSOREQUAL,
-    /* compare only major version number */
+    /* must have the same major version number and must be greater then or equal to the version.
+     * A syntax sugar for :
+     *      COMPARE_MAJOR(version, a.b.c-pre) == ((version >= a.b.c-pre) && (version < a+1.0.0))
+     */
     COMPARE_MAJOR,
-    /* compare only major and minor version numbers */
+    /* must have the same major and minor version numbers and must be greater then or equal to the version
+     * A syntax sugar for :
+     *      COMPARE_MINOR(version, a.b.c-pre) == ((version >= a.b.c-pre) && (version < a.b+1.0))
+     */
     COMPARE_MINOR,
 } VersionCompare;
 
@@ -105,12 +111,6 @@ int compare_versions(const SemVersion* ver_a, const SemVersion* ver_b);
  * A. ver_a(1.0.0) and ver_b(0.9.9 + COMPARE_GREATER)
  * B. ver_a(1.0.0) and ver_b(0.9.9 + COMPARE_NEQUAL)
  * C. ver_a(1.0.0) and ver_b(1.0.0 + COMPARE_EQUAL or COMPARE_NONE)
- *
- * Note: COMPARE_MAJOR and COMPARE_MINOR works different from others.
- * They does not compare prereleases, so
- * compare(1.0.0-rc, COMPARE_GREATEROREQUAL 1.0.0) --> 0
- * but
- * compare(1.0.0-rc, COMPARE_MINOR 1.0.0) --> 1
  */
 int version_equals(const SemVersion* ver_a, const SemVersion* ver_b);
 

@@ -337,9 +337,30 @@ int version_equals(const SemVersion* ver_a, const SemVersion* ver_b) {
         int r = compare_versions(ver_a, ver_b);
         return r < 0;
     } else if (ver_b->cmp == COMPARE_MAJOR) {
-        return ver_a->major == ver_b->major;
+        SemVersion tmp = (*ver_b);
+        tmp.cmp = COMPARE_GREATEROREQUAL;
+        int compare = compare_versions(ver_a, &tmp);
+        if (compare) {
+            tmp.prerelease = PRERELEASE_NONE;
+            tmp.cmp = COMPARE_LESS;
+            tmp.patch = 0;
+            tmp.minor = 0;
+            tmp.major++;
+            compare = compare_versions(ver_a, &tmp);
+        }
+        return compare;
     } else if (ver_b->cmp == COMPARE_MINOR) {
-        return ver_a->major == ver_b->major && ver_a->minor == ver_b->minor;
+        SemVersion tmp = (*ver_b);
+        tmp.cmp = COMPARE_GREATEROREQUAL;
+        int compare = compare_versions(ver_a, &tmp);
+        if (compare) {
+            tmp.prerelease = PRERELEASE_NONE;
+            tmp.cmp = COMPARE_LESS;
+            tmp.patch = 0;
+            tmp.minor++;
+            compare = compare_versions(ver_a, &tmp);
+        }
+        return compare;
     }
 
     return 0;

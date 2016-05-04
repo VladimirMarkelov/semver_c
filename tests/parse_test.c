@@ -201,14 +201,14 @@ static char* test_check_versions() {
 
     res = check_version(&ver1, "^1.10.12");
     mu_assert("Check major version", res == SEMVER_OK);
-    res = check_version(&ver1, "^1.12.12");
-    mu_assert("Check major version", res == SEMVER_OK);
-    res = check_version(&ver1, "^1.12.12,>=1.12.3");
+    res = check_version(&ver1, "^1.12.1");
+    mu_assert("Check major version 2", res == SEMVER_OK);
+    res = check_version(&ver1, "^1.12.1,>=1.12.3");
     mu_assert("Check major version RC", res == SEMVER_OK);
 
     res = check_version(&ver1, "~1.10.12");
     mu_assert("Check minor version", res == SEMVER_OUT_OF_RANGE);
-    res = check_version(&ver1, "~1.12.12");
+    res = check_version(&ver1, "~1.12.1");
     mu_assert("Check minor version 2", res == SEMVER_OK);
     res = check_version(&ver1, "~1.14.12");
     mu_assert("Check minor version 3", res == SEMVER_OUT_OF_RANGE);
@@ -231,11 +231,11 @@ static char* test_check_versions() {
 
     res = check_version(&ver1, "1.16.1 - 1.17.0,1.12.3-beta.31+345");
     mu_assert("Check range 3", res == SEMVER_OK);
-    res = check_version(&ver1, "1.16.1 - 1.17.0,^1.20.3");
+    res = check_version(&ver1, "1.16.1 - 1.17.0,^1.12.2");
     mu_assert("Check range 4", res == SEMVER_OK);
-    res = check_version(&ver1, "^1.20.3,1.16.1 - 1.17.0,");
-    mu_assert("Check range 4.1", res == SEMVER_OK);
-    res = check_version(&ver1, "1.16.1 - 1.17.0,~1.12.8");
+    res = check_version(&ver1, "^1.12.3,1.16.1 - 1.17.0,");
+    mu_assert("Check range 4.1", res == SEMVER_OUT_OF_RANGE);
+    res = check_version(&ver1, "1.16.1 - 1.17.0,~1.12.2");
     mu_assert("Check range 5", res == SEMVER_OK);
     res = check_version(&ver1, "1.10.3 - 1.13.9,1.16.1 - 1.17.0");
     mu_assert("Check range 6", res == SEMVER_OK);

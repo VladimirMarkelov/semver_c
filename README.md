@@ -27,8 +27,8 @@ Note: **str** can contain compare operator (one of <, <=, >=, >, ==, =, !=, ^, a
 * less or equal (COMPARE_LESSOREQUAL)
 * =, and == - equal (COMPARE_EQUAL)
 * != - not equal (COMPARE_NEQUAL)
-* ^ - major version equal (COMPARE_MAJOR)
-* ~ - major and minor versions are equal (COMPARE_MINOR)
+* ^ - major versions equal and the version is equal to or greater then (COMPARE_MAJOR)
+* ~ - major and minor versions equal and the version is equal to or greater then (COMPARE_MINOR)
 
 ## Compare versions
 
@@ -60,7 +60,9 @@ Result:
 Notes:
 
 1. Empty **cmp** (COMPARE_NONE) is the same as COMPARE_EQUAL.
-2. COMPARE_MINOR and COMPARE_MAJOR work different from other compare operators: they does not check prereleases. So, version_equals(1.0.0-rc1, COMPARE_GREATEROREQUAL 1.0.0) == 0 but version_equals(1.0.0-rc1, COMPARE_MINOR 1.0.0) == 1
+2. COMPARE_MINOR and COMPARE_MAJOR are syntax sugar for two compound checks:
+  *COMPARE_MAJOR: (version_a >= version_b) && (verson_a.major == version_b.major)
+  *COMPARE_MINOR: (version_a >= version_b) && (verson_a.major == version_b.major) && (verson_a.minor == version_b.minor)
 
 ### int check_version(const SemVersion* ver, const char *version_list)
 The function checks if a version **ver** meets any of the requirements set in **version_list**.
@@ -80,7 +82,9 @@ Rules to check:
 
 1. At first the function checks if a version meets any one-item rule in a version list (all items with COMPARE_NONE, COMPARE_EQUAL, COMPARE_NEQUAL, COMPARE_MAJOR, and COMPARE_MINOR **cmp** field) and stores version ranges in a version range list in the order of appearance, combining by two items of opposite **cmp** values. So, make sure that you enlist versions with COMPARE_GREATER, COMPARE_GREATEROREQUAL, COMPARE_LESS, and COMPARE_LESSOREQUAL in correct order (e.g, '>1.5.0,>=1.1.0,<1.2.0' makes two ranges to check: [ver>1.5.0 && ver<1.2.0] and [ver>=1.1.0] but '>=1.1.0,>1.5.0,<1.2.0' makes ranges to check: [ver>=1.1.0 && ver<1.2.0] and [ver>1.5.0])
 2. If no single version equals **ver** then the function checks if **ver** fits any version range in list
-3. Remember about COMPARE_MAJOR and COMPARE_MINOR feature. So, if you want to limit the required version with sinlge stable version (in other words, you want to forbid any beta, alpha, rc etc version then do not use COMPARE_MAJOR and COMPARE_MINOR: '~1.1.0;>=1.1.0' does not work, because this list allows to use 1.1.0-rc using the first item '~1.1.0'. Use a list '>1.1.0,<1.2.0' or like '1.1.0 - 1.1.999999'.
+3. COMPARE_MINOR and COMPARE_MAJOR are syntax sugar for two compound checks:
+  *COMPARE_MAJOR: (version_a >= version_b) && (verson_a.major == version_b.major)
+  *COMPARE_MINOR: (version_a >= version_b) && (verson_a.major == version_b.major) && (verson_a.minor == version_b.minor)
 
 # Using the library
 
